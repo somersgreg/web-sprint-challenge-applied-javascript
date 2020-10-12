@@ -1,3 +1,4 @@
+
 // STEP 2: Create tabs
 // -----------------------
 // Using axios send a GET request to the address: https://lambda-times-api.herokuapp.com/topics
@@ -9,3 +10,17 @@
 //    <div class="tab">topic here</div>
 //
 // NOTE: you do _not_ need to install axios as it's included in the HTML via script element
+
+
+let arr = [];
+const topicTab = document.querySelector('.topics');
+axios
+.get ('https://lambda-times-api.herokuapp.com/topics')
+.then (response => {
+    arr = response.data.topics;
+    arr.forEach(e => {
+    let newDiv = document.createElement ('div');
+    newDiv.classList.add ('tab');
+    newDiv.textContent = e;
+    topicTab.appendChild (newDiv)
+})})
