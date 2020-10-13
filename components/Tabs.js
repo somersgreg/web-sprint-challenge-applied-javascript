@@ -3,7 +3,7 @@
 // -----------------------
 // Using axios send a GET request to the address: https://lambda-times-api.herokuapp.com/topics
 // Once the data is resolved use console logs or breakpoints to review the structure.
-// Iterate over the topics creating a new tab for each topic, and appending it to the DOM
+// Iterate over the topics creating a create tab for each topic, and appending it to the DOM
 // under the div.topics element.
 //
 //  Each tab should look like this:
@@ -12,15 +12,20 @@
 // NOTE: you do _not_ need to install axios as it's included in the HTML via script element
 
 
-let arr = [];
-const topicTab = document.querySelector('.topics');
+let topicsArray = [];
+const topicsClass = document.querySelector('.topics');
 axios
 .get ('https://lambda-times-api.herokuapp.com/topics')
 .then (response => {
-    arr = response.data.topics;
-    arr.forEach(e => {
-    let newDiv = document.createElement ('div');
-    newDiv.classList.add ('tab');
-    newDiv.textContent = e;
-    topicTab.appendChild (newDiv)
-})})
+    topicsArray = response.data.topics; // so i can do method with it
+    console.log("topicsArray", topicsArray) //topicsArray (5) ["javascript", "bootstrap", "technology", "jquery", "node.js"]
+    topicsArray.forEach(e => {
+    let createTab = document.createElement ('div'); // create divs with each topic word
+    console.log("createTab", createTab)
+    createTab.classList.add ('tab');
+    createTab.textContent = e;
+    topicsClass.appendChild (createTab)
+})  })
+.catch(err => {
+    console.log('Error: ', err)
+})

@@ -20,56 +20,50 @@
 // Add a listener for click events so that when a user clicks on a card, the headline of the article is logged to the console.
 //
 // Use your function to create a card for each of the articles, and append each card to the DOM.
-        // console.log ('Here is the res: ', res); // data: articles: {javascript:...}
-        // console.log (res.data.articles) // {javascript: Array(4), bootstrap: Array(3), technology: Array(3), jquery: Array(3), node: Array(2)}
-        // let keys = Object.keys (res.data.articles);
-        // console.log (keys) //(5) ["javascript", "bootstrap", "technology", "jquery", "node"]
 
-keys =[]
 
-axios
-    .get (`https://lambda-times-api.herokuapp.com/articles`)
-    .then (res => {
-
-        let javascript = res.data.articles.javascript;
-        let bootstrap = res.data.articles.bootstrap;
-        let technology = res.data.articles.technology;
-        let jquery = res.data.articles.jquery;
-        let node = res.data.articles.node;
-
-        keys.forEach(el => {
-        console.log("el", el)
-            el.forEach(e => {
-            cardsEntryPoint.appendChild(cardMaker(e))})})
-    })
-    .catch(err => {
-        console.log('Error: ', err);
+axios.get('https://lambda-times-api.herokuapp.com/articles')
+.then(response => {
+    let articles = Object.values(response.data.articles); // object constructor
+    articles.forEach(e => {
+        e.forEach(el => {  // pushing each article through
+            cardMaker.appendChild(createCard(el));
+        });
     });
-function cardMaker(object) {
-    const divCard = document.createElement('div');
+})
+.catch(err => {
+    console.log('Error: ', err)
+  });
+
+const createCard = (object) => {
+    const newCard = document.createElement('div');
     const headlineDiv = document.createElement('div');
     const authorDiv = document.createElement('div');
     const imgDiv = document.createElement('div');
-    const img = document.createElement('img');
-    const span = document.createElement('span');
+    const imgSrc = document.createElement('img');
+    const authorName = document.createElement('span');
 
-    divCard.classList.add('card');
+    newCard.appendChild(headlineDiv);
+    // console.log("createCard -> headlineDiv", headlineDiv)
+    newCard.appendChild(authorDiv);
+    authorDiv.appendChild(imgDiv);
+    imgDiv.appendChild(imgSrc);
+    authorDiv.appendChild(authorName);
+
+    newCard.classList.add('card');
     headlineDiv.classList.add('headline');
     authorDiv.classList.add('author');
     imgDiv.classList.add('img-container');
 
     headlineDiv.textContent = object.headline;
-    img.src = object.authorPhoto;
-    span.textContent = `By ${object.authorName}`;
-    divCard.appendChild(headlineDiv);
-    divCard.appendChild(authorDiv);
-    authorDiv.appendChild(imgDiv);
-    imgDiv.appendChild(img);
-    authorDiv.appendChild(span);
+    imgSrc.src = object.authorPhoto;
+    authorName.textContent = `By ${object.authorName}`;
+    console.log("createCard -> object.authorName", object.authorName)
 
-    divCard.addEventListener('click', (event) => {
-       console.log(headlineDiv.textContent = object.headline);
-    });
-    return divCard;
-};
-const cardsEntryPoint = document.querySelector('.cards-container');
+    newCard.addEventListener('click', (event) => {
+        console.log(headlineDiv.textContent);
+     });
+
+    return newCard;
+}
+const cardMaker = document.querySelector('.cards-container');
